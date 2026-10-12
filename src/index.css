@@ -1,0 +1,781 @@
+/* ==========================================================================
+   Pokedex stylesheet
+
+   It is one file, split into labelled sections in the order you meet them:
+
+     1. Colours (custom properties)   5. Pokemon cards
+     2. Base and layout               6. Detail panel
+     3. The Pokedex device            7. Small screens
+     4. Buttons, search, type chips   8. Type colours
+   ========================================================================== */
+
+/* 1. Colours ------------------------------------------------------------ */
+
+:root {
+  /* The device itself */
+  --red: #e02b20;
+  --red-dark: #b31e15;
+  --red-light: #f4564a;
+  --shell-edge: #7d1710;
+
+  /* The screen */
+  --lcd: #9fbc3f;
+  --lcd-dark: #7d9629;
+  --lcd-ink: #23340f;
+  --lcd-glow: rgba(255, 255, 255, 0.25);
+
+  /* Everything else */
+  --ink: #1c2434;
+  --paper: #f6f1e6;
+  --screen-bg: #d9d3c4;
+  --gap: 16px;
+  --radius: 14px;
+}
+
+/* 2. Base and layout ---------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  background:
+    radial-gradient(circle at 50% 0%, #2c3550 0%, #131828 60%, #0a0d16 100%);
+  color: var(--ink);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Shared bits ------------------------------------------------------------ */
+
+.message {
+  padding: 10px 14px;
+  border: 2px dashed var(--lcd-dark);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.message--error {
+  border-color: #b3261e;
+  color: #b3261e;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 3. The Pokedex device -------------------------------------------------- */
+
+.pokedex {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.pokedex__shell {
+  background: linear-gradient(160deg, var(--red-light), var(--red) 45%, var(--red-dark));
+  border: 4px solid var(--shell-edge);
+  border-radius: 28px;
+  padding: 18px;
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+}
+
+.pokedex__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 4px 8px 16px;
+}
+
+.pokedex__logo {
+  color: #fff;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-shadow: 0 3px 0 var(--shell-edge);
+}
+
+.pokedex__sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pokedex__lights {
+  display: flex;
+  gap: 8px;
+}
+
+.light {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--shell-edge);
+}
+
+.light--green {
+  background: #6ee36e;
+  box-shadow: 0 0 10px #6ee36e;
+}
+
+.light--red {
+  background: #ff6b5e;
+  box-shadow: 0 0 10px #ff6b5e;
+}
+
+.pokedex__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 16px 8px 4px;
+}
+
+.pokedex__grille {
+  width: 90px;
+  height: 34px;
+  background-image: radial-gradient(var(--shell-edge) 2.5px, transparent 3px);
+  background-size: 12px 12px;
+  opacity: 0.65;
+}
+
+.pokedex__hinge {
+  width: 120px;
+  height: 16px;
+  border: 3px solid var(--shell-edge);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* The green screen ------------------------------------------------------- */
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  background: var(--lcd);
+  border: 4px solid #4d5c1d;
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 0 3px var(--lcd-dark),
+    inset 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Faint scan lines so the screen feels like an old LCD. */
+.screen__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 3px,
+      var(--lcd-glow) 3px 4px
+    );
+}
+
+.screen__content {
+  position: relative;
+  padding: 18px;
+}
+
+/* 4. Buttons, search and type chips -------------------------------------- */
+
+.btn {
+  padding: 10px 16px;
+  border: 3px solid var(--shell-edge);
+  border-radius: 10px;
+  background: linear-gradient(#fff, #d8d3c6);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--shell-edge);
+}
+
+.btn:hover:not(:disabled) {
+  background: linear-gradient(#fff, #eee9dc);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--shell-edge);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: linear-gradient(var(--red-light), var(--red));
+  color: #fff;
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.search__input {
+  flex: 1 1 220px;
+  padding: 10px 14px;
+  border: 3px solid var(--lcd-dark);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--lcd-ink);
+  font: inherit;
+}
+
+.search__input:focus {
+  outline: 3px solid var(--shell-edge);
+}
+
+.search .message {
+  flex: 1 0 100%;
+}
+
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.chip {
+  padding: 5px 12px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  background: var(--type-color, #8d8d8d);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.chip:hover {
+  opacity: 0.85;
+}
+
+.chip--active {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px var(--lcd-ink);
+}
+
+/* Type badges ------------------------------------------------------------ */
+
+.type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  background: var(--type-color, #8d8d8d);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Status line and pagination --------------------------------------------- */
+
+.screen__status {
+  margin-bottom: 12px;
+  color: var(--lcd-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* 5. Pokemon cards ------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px 14px;
+  border: 3px solid var(--lcd-dark);
+  border-radius: var(--radius);
+  background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(233, 229, 214, 0.9));
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(77, 92, 29, 0.55);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 rgba(77, 92, 29, 0.55);
+}
+
+.card:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(77, 92, 29, 0.55);
+}
+
+.card__number {
+  align-self: flex-start;
+  color: var(--lcd-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.card__sprite {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.card__name {
+  font-weight: 700;
+  text-align: center;
+}
+
+.card__types {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+/* The grey placeholders shown while the page is downloading. */
+.card--loading {
+  min-height: 170px;
+  background: rgba(255, 255, 255, 0.35);
+  border-style: dashed;
+  cursor: default;
+}
+
+/* 6. Detail panel -------------------------------------------------------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  background: rgba(10, 12, 20, 0.72);
+}
+
+.detail {
+  position: relative;
+  width: min(920px, 100%);
+  background: var(--paper);
+  border: 4px solid var(--shell-edge);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.detail__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--shell-edge);
+  border-radius: 50%;
+  background: linear-gradient(var(--red-light), var(--red));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.detail__body {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.3fr);
+  gap: var(--gap);
+}
+
+.detail__lists {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* The profile column ----------------------------------------------------- */
+
+.profile {
+  text-align: center;
+}
+
+.profile__number {
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.profile__art {
+  width: 190px;
+  height: 190px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.25));
+}
+
+.profile__name {
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile__types,
+.profile__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #4a5468;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge--gold {
+  background: linear-gradient(#f7c948, #d79b16);
+  color: #4a3200;
+}
+
+.facts {
+  margin-top: 16px;
+  border-top: 3px solid var(--lcd-dark);
+}
+
+.facts__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 2px;
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+}
+
+.facts__label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.facts__heading {
+  margin-top: 16px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border: 2px solid var(--lcd-dark);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+}
+
+.sprites {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.sprites img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  background: #fff;
+  border: 2px solid var(--lcd-dark);
+  border-radius: 8px;
+}
+
+.flavor {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--lcd);
+  border: 3px solid var(--lcd-dark);
+  border-radius: 12px;
+  color: var(--lcd-ink);
+  font-size: 14px;
+  text-align: left;
+}
+
+.cry {
+  width: 100%;
+  margin-top: 14px;
+}
+
+/* The reusable panels on the right --------------------------------------- */
+
+.panel {
+  padding: 14px;
+  background: #fff;
+  border: 3px solid var(--lcd-dark);
+  border-radius: var(--radius);
+  box-shadow: 0 3px 0 rgba(77, 92, 29, 0.35);
+}
+
+.panel__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--red-dark);
+}
+
+.panel__note,
+.panel__status {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #667;
+}
+
+/* Stats ------------------------------------------------------------------ */
+
+.stats__row {
+  display: grid;
+  grid-template-columns: 62px 1fr 34px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.stats__label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stats__track {
+  height: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #e6e2d6;
+  overflow: hidden;
+}
+
+.stats__fill {
+  display: block;
+  height: 100%;
+  background: var(--stat-color, #888);
+}
+
+.stats__value {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.stat-hp { --stat-color: #f2555a; }
+.stat-attack { --stat-color: #f5a623; }
+.stat-defense { --stat-color: #f7d02c; }
+.stat-special-attack { --stat-color: #4a8fe7; }
+.stat-special-defense { --stat-color: #6cc24a; }
+.stat-speed { --stat-color: #b07ae8; }
+
+/* Type matchups ---------------------------------------------------------- */
+
+.matchup__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.matchup__label {
+  width: 84px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Evolution -------------------------------------------------------------- */
+
+.evolutions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.evolution {
+  flex: 1 1 110px;
+  padding: 8px;
+  background: var(--screen-bg);
+  border: 2px solid var(--lcd-dark);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.evolution__sprite {
+  width: 72px;
+  height: 72px;
+  image-rendering: pixelated;
+}
+
+.evolution__name {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.evolution__condition {
+  display: block;
+  font-size: 11px;
+  color: var(--red-dark);
+}
+
+/* Moves ------------------------------------------------------------------ */
+
+.moves {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 2px solid var(--lcd-dark);
+  border-radius: 10px;
+  background: var(--screen-bg);
+}
+
+.move {
+  display: flex;
+  gap: 10px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.move:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.move__level {
+  width: 52px;
+  font-weight: 700;
+  color: var(--red-dark);
+}
+
+.move__name {
+  font-weight: 500;
+}
+
+/* 7. Small screens ------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  body {
+    padding: 12px 8px 32px;
+  }
+
+  .pokedex__shell {
+    padding: 12px;
+  }
+
+  .detail {
+    padding: 18px 14px;
+  }
+
+  /* The two columns of the detail panel become one. */
+  .detail__body {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  }
+
+  .search .btn {
+    flex: 1 1 auto;
+  }
+}
+
+/* 8. Type colours -------------------------------------------------------- */
+
+/* Each type class sets one colour, used by .type-badge and .chip. */
+
+.type-normal { --type-color: #9fa19f; }
+.type-fire { --type-color: #ff9d55; }
+.type-water { --type-color: #4d90d5; }
+.type-electric { --type-color: #f5cf3f; color: #4a3a00; }
+.type-grass { --type-color: #63bb5b; }
+.type-ice { --type-color: #73cec0; color: #04302a; }
+.type-fighting { --type-color: #ce4069; }
+.type-poison { --type-color: #ab6ac8; }
+.type-ground { --type-color: #d97845; }
+.type-flying { --type-color: #8fa8dd; color: #1b2440; }
+.type-psychic { --type-color: #f97176; }
+.type-bug { --type-color: #90c12c; color: #23380a; }
+.type-rock { --type-color: #c7b78b; color: #3a2f10; }
+.type-ghost { --type-color: #5269ad; }
+.type-dragon { --type-color: #0b6dc3; }
+.type-dark { --type-color: #5a5465; }
+.type-steel { --type-color: #5a8ea1; }
+.type-fairy { --type-color: #ef93b2; color: #4a0f2a; }
