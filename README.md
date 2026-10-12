@@ -26,12 +26,12 @@ Then open **http://localhost:5173** and start scanning.
 
 ## ▸ Controls
 
-| Action | What it does |
-| --- | --- |
-| **Search** | Look up a Pokémon by name (`pikachu`) or number (`25`) |
-| **Random** | Jump to a surprise Pokémon |
-| **Type chips** | Filter the grid by type — tap again to clear |
-| **A card** | Open the full profile — press `Esc` to close it |
+| Action         | What it does                                           |
+| -------------- | ------------------------------------------------------ |
+| **Search**     | Look up a Pokémon by name (`pikachu`) or number (`25`) |
+| **Random**     | Jump to a surprise Pokémon                             |
+| **Type chips** | Filter the grid by type — tap again to clear           |
+| **A card**     | Open the full profile — press `Esc` to close it        |
 
 ## ▸ What's inside a profile
 
@@ -39,22 +39,29 @@ Artwork & sprites · types · base stats · type matchups · evolution chain · 
 
 ## ▸ Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start Vite with hot reload |
-| `npm run build` | Build for production to `dist/` |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Run ESLint |
+| Command                | Description                      |
+| ---------------------- | -------------------------------- |
+| `npm run dev`          | Start Vite with hot reload       |
+| `npm run build`        | Build for production to `dist/`  |
+| `npm run preview`      | Preview the production build     |
+| `npm run lint`         | Run ESLint                       |
+| `npm run format`       | Format the code with Prettier    |
+| `npm run format:check` | Check formatting without writing |
 
 ## ▸ Project structure
 
 ```
 src/
 ├─ App.jsx            # shell: grid, filters and detail panel
-├─ api.js             # every PokeAPI URL lives here
-├─ useFetch.js        # tiny data-loading hook
-├─ usePokemonList.js  # loads + normalises list results
-├─ pokemonHelpers.js  # formatting helpers
+├─ main.jsx           # app entry point
+├─ index.css          # the Pokédex device styles
+├─ hooks/             # reusable data-loading hooks
+│  ├─ useFetch.js
+│  ├─ usePokemonList.js
+│  └─ usePokemonCards.js
+├─ lib/               # PokeAPI calls + formatting helpers
+│  ├─ api.js
+│  └─ pokemonHelpers.js
 └─ components/        # cards, search, types, stats, evolutions, moves…
 ```
 

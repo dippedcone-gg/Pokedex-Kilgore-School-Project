@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getJson } from "./api"
+import { getJson } from "../lib/api"
 
 // Fetches a URL and hands the component three things: the data, whether it is
 // still loading, and an error message if something went wrong.

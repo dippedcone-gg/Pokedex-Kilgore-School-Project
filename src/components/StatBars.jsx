@@ -1,4 +1,4 @@
-import { STATS } from "../pokemonHelpers"
+import { STATS } from "../lib/pokemonHelpers"
 
 // Any base stat higher than this would fill the whole bar, so we use it as the
 // scale. The API's numbers go up to about 200.

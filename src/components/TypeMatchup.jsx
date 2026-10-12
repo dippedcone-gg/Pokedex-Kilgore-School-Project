@@ -1,6 +1,6 @@
-import { typeUrl } from "../api"
-import { useFetch } from "../useFetch"
-import { formatName } from "../pokemonHelpers"
+import { typeUrl } from "../lib/api"
+import { useFetch } from "../hooks/useFetch"
+import { formatName } from "../lib/pokemonHelpers"
 import TypeBadge from "./TypeBadge"
 
 // One row of badges, skipped completely when the type has no matchups there.

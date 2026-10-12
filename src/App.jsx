@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
-import { NATIONAL_DEX_SIZE, PAGE_SIZE, getPokemon, listUrl, typeUrl } from "./api"
-import { formatName } from "./pokemonHelpers"
-import { usePokemonList } from "./usePokemonList"
+import { NATIONAL_DEX_SIZE, PAGE_SIZE, getPokemon, listUrl, typeUrl } from "./lib/api"
+import { formatName } from "./lib/pokemonHelpers"
+import { usePokemonList } from "./hooks/usePokemonList"
 import PokemonGrid from "./components/PokemonGrid"
 import PokemonDetail from "./components/PokemonDetail"
 import SearchBar from "./components/SearchBar"
@@ -13,7 +13,7 @@ export default function App() {
   const [typeName, setTypeName] = useState(null) // null means "all types"
 
   // --- The detail panel ---------------------------------------------------
-  const [selectedName, setSelectedName] = useState(null)
+  const [selectedPokemon, setSelectedPokemon] = useState(null)
   const [searchError, setSearchError] = useState("")
 
   // One URL decides what the grid lists: either a page of the full list, or
@@ -44,14 +44,14 @@ export default function App() {
     setSearchError("")
     // The API accepts a name or a number, and it fails for anything unknown.
     getPokemon(text)
-      .then((pokemon) => setSelectedName(pokemon.name))
+      .then((pokemon) => setSelectedPokemon(pokemon.name))
       .catch(() => setSearchError(`No Pokemon called "${text}".`))
   }
 
   function handleRandom() {
     setSearchError("")
     const number = Math.floor(Math.random() * NATIONAL_DEX_SIZE) + 1
-    setSelectedName(String(number))
+    setSelectedPokemon(String(number))
   }
 
   return (
@@ -76,20 +76,20 @@ export default function App() {
 
             <TypeFilter activeType={typeName} onSelect={handleTypeSelect} />
 
-            <div className="screen__status">
+            <div className="screen__status" role="status" aria-live="polite">
               {list.loading && <span>Loading Pokemon...</span>}
               {!list.loading && !list.error && (
                 <span>
-                  {typeName ? `${formatName(typeName)} type` : "All types"} &middot; page{" "}
-                  {page + 1} of {pageCount} &middot; {total.toLocaleString()} found
+                  {typeName ? `${formatName(typeName)} type` : "All types"} &middot; page {page + 1}{" "}
+                  of {pageCount} &middot; {total.toLocaleString()} found
                 </span>
               )}
               {list.error && <span className="message--error">Could not load the list.</span>}
             </div>
 
-            <PokemonGrid names={names} onSelect={setSelectedName} />
+            <PokemonGrid names={names} onSelect={setSelectedPokemon} />
 
-            <nav className="pagination">
+            <nav className="pagination" aria-label="Pagination">
               <button className="btn" disabled={!hasPrevious} onClick={() => setPage(page - 1)}>
                 ◀ Previous
               </button>
@@ -106,8 +106,8 @@ export default function App() {
         </footer>
       </div>
 
-      {selectedName && (
-        <PokemonDetail name={selectedName} onClose={() => setSelectedName(null)} />
+      {selectedPokemon && (
+        <PokemonDetail name={selectedPokemon} onClose={() => setSelectedPokemon(null)} />
       )}
     </div>
   )

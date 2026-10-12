@@ -1,5 +1,5 @@
 import TypeBadge from "./TypeBadge"
-import { formatName, getCardSprite } from "../pokemonHelpers"
+import { formatName, getCardSprite } from "../lib/pokemonHelpers"
 
 // One Pokemon in the grid. Clicking it opens the detail view.
 export default function PokemonCard({ pokemon, onSelect }) {
@@ -9,12 +9,7 @@ export default function PokemonCard({ pokemon, onSelect }) {
   return (
     <button className="card" onClick={() => onSelect(pokemon.name)}>
       <span className="card__number">#{number}</span>
-      <img
-        className="card__sprite"
-        src={getCardSprite(pokemon)}
-        alt={formatName(pokemon.name)}
-        loading="lazy"
-      />
+      <img className="card__sprite" src={getCardSprite(pokemon)} alt="" loading="lazy" />
       <span className="card__name">{formatName(pokemon.name)}</span>
       <span className="card__types">
         {types.map((type) => (

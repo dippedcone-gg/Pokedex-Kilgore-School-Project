@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import { pokemonUrl, speciesUrl } from "../api"
-import { useFetch } from "../useFetch"
+import { pokemonUrl, speciesUrl } from "../lib/api"
+import { useFetch } from "../hooks/useFetch"
 import {
   formatGeneration,
   formatHeight,
@@ -9,7 +9,7 @@ import {
   getArtwork,
   getFlavorText,
   getGenus,
-} from "../pokemonHelpers"
+} from "../lib/pokemonHelpers"
 import TypeBadge from "./TypeBadge"
 import StatBars from "./StatBars"
 import TypeMatchup from "./TypeMatchup"
@@ -40,21 +40,21 @@ export default function PokemonDetail({ name, onClose }) {
   }, [onClose])
 
   return (
-    <div className="backdrop" onClick={onClose}>
-      <div
-        className="detail"
-        role="dialog"
-        aria-modal="true"
-        aria-label={formatName(name)}
-        onClick={(event) => event.stopPropagation()}
-      >
+    <div
+      className="backdrop"
+      role="presentation"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <div className="detail" role="dialog" aria-modal="true" aria-label={formatName(name)}>
         <button className="detail__close" onClick={onClose} aria-label="Close">
           ✕
         </button>
 
         {pokemon.loading && <p className="message">Scanning...</p>}
         {pokemon.error && <p className="message message--error">Could not load {name}.</p>}
-        {pokemon.data && <Facts pokemon={pokemon.data} species={speciesData} />}
+        {pokemon.data && <Profile pokemon={pokemon.data} species={speciesData} />}
       </div>
     </div>
   )
@@ -62,7 +62,7 @@ export default function PokemonDetail({ name, onClose }) {
 
 // Everything inside the panel. Split in two so each half stays readable:
 // the profile on the left, the lists on the right.
-function Facts({ pokemon, species }) {
+function Profile({ pokemon, species }) {
   const types = pokemon.types.map((entry) => entry.type.name)
   const number = `#${String(pokemon.id).padStart(3, "0")}`
 
@@ -89,7 +89,7 @@ function Facts({ pokemon, species }) {
     <div className="detail__body">
       <div className="profile">
         <p className="profile__number">{number}</p>
-        <img className="profile__art" src={getArtwork(pokemon)} alt={formatName(pokemon.name)} />
+        <img className="profile__art" src={getArtwork(pokemon)} alt="" />
 
         <h2 className="profile__name">{formatName(pokemon.name)}</h2>
 
@@ -139,7 +139,14 @@ function Facts({ pokemon, species }) {
         {flavorText && <p className="flavor">{flavorText}</p>}
 
         {pokemon.cries?.latest && (
-          <audio className="cry" controls preload="none" src={pokemon.cries.latest} />
+          // eslint-disable-next-line jsx-a11y/media-has-caption -- a Pokemon cry is a non-speech sound effect
+          <audio
+            className="cry"
+            controls
+            preload="none"
+            src={pokemon.cries.latest}
+            aria-label={`${formatName(pokemon.name)} cry`}
+          />
         )}
       </div>
 

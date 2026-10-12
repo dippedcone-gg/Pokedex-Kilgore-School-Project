@@ -1,9 +1,5 @@
-import { useFetch } from "../useFetch"
-import {
-  flattenEvolutionChain,
-  formatName,
-  getSpriteFromSpeciesUrl,
-} from "../pokemonHelpers"
+import { useFetch } from "../hooks/useFetch"
+import { flattenEvolutionChain, formatName, getSpriteFromSpeciesUrl } from "../lib/pokemonHelpers"
 
 // The family tree, e.g. Charmander -> Charmeleon -> Charizard.
 // We pass in the URL because only the species data knows which chain to use.
@@ -35,7 +31,7 @@ export default function EvolutionChain({ chainUrl }) {
             <img
               className="evolution__sprite"
               src={getSpriteFromSpeciesUrl(stage.url)}
-              alt={formatName(stage.name)}
+              alt=""
               loading="lazy"
             />
             <span className="evolution__name">{formatName(stage.name)}</span>

@@ -1,4 +1,4 @@
-import { formatName, getMoveLevel } from "../pokemonHelpers"
+import { formatName, getMoveLevel } from "../lib/pokemonHelpers"
 
 // A Pokemon knows 100+ moves, which is too many to show at once, so we put them
 // in a box that scrolls. "Lv." is the earliest level the Pokemon learns it.

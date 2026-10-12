@@ -12,9 +12,13 @@ export default function SearchBar({ onSearch, onRandom, error }) {
   }
 
   return (
-    <form className="search" onSubmit={handleSubmit}>
+    <form className="search" role="search" onSubmit={handleSubmit}>
+      <label className="visually-hidden" htmlFor="pokemon-search">
+        Search Pokemon by name or number
+      </label>
       <input
         className="search__input"
+        id="pokemon-search"
         type="search"
         value={text}
         placeholder="Search a name or number..."
@@ -26,7 +30,11 @@ export default function SearchBar({ onSearch, onRandom, error }) {
       <button className="btn" type="button" onClick={onRandom}>
         Random
       </button>
-      {error && <p className="message message--error">{error}</p>}
+      {error && (
+        <p className="message message--error" role="alert">
+          {error}
+        </p>
+      )}
     </form>
   )
 }

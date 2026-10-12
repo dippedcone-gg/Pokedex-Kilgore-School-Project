@@ -4,11 +4,29 @@
 // PokeAPI stores sprites as files named after the Pokemon number.
 const SPRITE_FOLDER = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon"
 
+// The language code we show text for.
+const ENGLISH = "en"
+
 // The 18 classic types, in the order we want the filter buttons to appear.
 export const TYPE_NAMES = [
-  "normal", "fire", "water", "electric", "grass", "ice",
-  "fighting", "poison", "ground", "flying", "psychic", "bug",
-  "rock", "ghost", "dragon", "dark", "steel", "fairy",
+  "normal",
+  "fire",
+  "water",
+  "electric",
+  "grass",
+  "ice",
+  "fighting",
+  "poison",
+  "ground",
+  "flying",
+  "psychic",
+  "bug",
+  "rock",
+  "ghost",
+  "dragon",
+  "dark",
+  "steel",
+  "fairy",
 ]
 
 // The base stats every Pokemon has, in the order they are usually listed.
@@ -27,8 +45,8 @@ const SPECIAL_NAMES = {
   "nidoran-m": "Nidoran ♂",
   "mr-mime": "Mr. Mime",
   "mr-rime": "Mr. Rime",
-  "farfetchd": "Farfetch'd",
-  "sirfetchd": "Sirfetch'd",
+  farfetchd: "Farfetch'd",
+  sirfetchd: "Sirfetch'd",
   "ho-oh": "Ho-Oh",
   "porygon-z": "Porygon-Z",
   "type-null": "Type: Null",
@@ -97,7 +115,7 @@ export function formatGeneration(generationName) {
 // version. We just want the most recent English one.
 export function getFlavorText(species) {
   const englishEntries = species.flavor_text_entries.filter(
-    (entry) => entry.language.name === "en",
+    (entry) => entry.language.name === ENGLISH,
   )
   const newest = englishEntries[englishEntries.length - 1]
   if (!newest) return ""
@@ -106,7 +124,7 @@ export function getFlavorText(species) {
 
 // Same idea for the one-line description, like "Flame Pokemon".
 export function getGenus(species) {
-  const entry = species.genera.find((item) => item.language.name === "en")
+  const entry = species.genera.find((item) => item.language.name === ENGLISH)
   return entry ? entry.genus : ""
 }
 
@@ -127,16 +145,13 @@ export function getCardSprite(pokemon) {
 
 // Big picture for the detail view, with a fallback for Pokemon that have none.
 export function getArtwork(pokemon) {
-  return (
-    pokemon.sprites.other?.["official-artwork"]?.front_default ||
-    pokemon.sprites.front_default
-  )
+  return pokemon.sprites.other?.["official-artwork"]?.front_default || pokemon.sprites.front_default
 }
 
 // The evolution chain gives us species links like
 // ".../pokemon-species/4/", and sprite files use that same number.
-export function getSpriteFromSpeciesUrl(speciesUrl) {
-  const number = speciesUrl.split("/").filter(Boolean).pop()
+export function getSpriteFromSpeciesUrl(url) {
+  const number = url.split("/").filter(Boolean).pop()
   return `${SPRITE_FOLDER}/${number}.png`
 }
 

@@ -41,8 +41,7 @@
 body {
   margin: 0;
   padding: 24px 16px 48px;
-  background:
-    radial-gradient(circle at 50% 0%, #2c3550 0%, #131828 60%, #0a0d16 100%);
+  background: radial-gradient(circle at 50% 0%, #2c3550 0%, #131828 60%, #0a0d16 100%);
   color: var(--ink);
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -84,6 +83,20 @@ img {
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* Hidden from sight but still available to screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* 3. The Pokedex device -------------------------------------------------- */
 
 .pokedex {
@@ -119,7 +132,12 @@ img {
 }
 
 .pokedex__sub {
-  color: rgba(255, 255, 255, 0.75);
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -189,12 +207,7 @@ img {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0 3px,
-      var(--lcd-glow) 3px 4px
-    );
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, var(--lcd-glow) 3px 4px);
 }
 
 .screen__content {
@@ -232,7 +245,7 @@ img {
 }
 
 .btn--primary {
-  background: linear-gradient(var(--red-light), var(--red));
+  background: linear-gradient(var(--red), var(--red-dark));
   color: #fff;
 }
 
@@ -280,16 +293,16 @@ img {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  opacity: 0.55;
-  transition: opacity 0.15s, transform 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .chip:hover {
-  opacity: 0.85;
+  filter: brightness(1.08);
 }
 
 .chip--active {
-  opacity: 1;
   transform: translateY(-2px);
   box-shadow: 0 0 0 3px var(--lcd-ink);
 }
@@ -336,6 +349,11 @@ img {
   gap: 12px;
 }
 
+/* Keep the list semantics but let the cards sit directly in the grid. */
+.grid__item {
+  display: contents;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -349,7 +367,9 @@ img {
   font: inherit;
   cursor: pointer;
   box-shadow: 0 3px 0 rgba(77, 92, 29, 0.55);
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
 }
 
 .card:hover {
@@ -364,7 +384,7 @@ img {
 
 .card__number {
   align-self: flex-start;
-  color: var(--lcd-dark);
+  color: #566619;
   font-size: 12px;
   font-weight: 700;
 }
@@ -428,7 +448,7 @@ img {
   height: 36px;
   border: 3px solid var(--shell-edge);
   border-radius: 50%;
-  background: linear-gradient(var(--red-light), var(--red));
+  background: linear-gradient(var(--red), var(--red-dark));
   color: #fff;
   font-size: 16px;
   font-weight: 700;
@@ -638,12 +658,24 @@ img {
   text-align: right;
 }
 
-.stat-hp { --stat-color: #f2555a; }
-.stat-attack { --stat-color: #f5a623; }
-.stat-defense { --stat-color: #f7d02c; }
-.stat-special-attack { --stat-color: #4a8fe7; }
-.stat-special-defense { --stat-color: #6cc24a; }
-.stat-speed { --stat-color: #b07ae8; }
+.stat-hp {
+  --stat-color: #f2555a;
+}
+.stat-attack {
+  --stat-color: #f5a623;
+}
+.stat-defense {
+  --stat-color: #f7d02c;
+}
+.stat-special-attack {
+  --stat-color: #4a8fe7;
+}
+.stat-special-defense {
+  --stat-color: #6cc24a;
+}
+.stat-speed {
+  --stat-color: #b07ae8;
+}
 
 /* Type matchups ---------------------------------------------------------- */
 
@@ -761,21 +793,71 @@ img {
 
 /* Each type class sets one colour, used by .type-badge and .chip. */
 
-.type-normal { --type-color: #9fa19f; }
-.type-fire { --type-color: #ff9d55; }
-.type-water { --type-color: #4d90d5; }
-.type-electric { --type-color: #f5cf3f; color: #4a3a00; }
-.type-grass { --type-color: #63bb5b; }
-.type-ice { --type-color: #73cec0; color: #04302a; }
-.type-fighting { --type-color: #ce4069; }
-.type-poison { --type-color: #ab6ac8; }
-.type-ground { --type-color: #d97845; }
-.type-flying { --type-color: #8fa8dd; color: #1b2440; }
-.type-psychic { --type-color: #f97176; }
-.type-bug { --type-color: #90c12c; color: #23380a; }
-.type-rock { --type-color: #c7b78b; color: #3a2f10; }
-.type-ghost { --type-color: #5269ad; }
-.type-dragon { --type-color: #0b6dc3; }
-.type-dark { --type-color: #5a5465; }
-.type-steel { --type-color: #5a8ea1; }
-.type-fairy { --type-color: #ef93b2; color: #4a0f2a; }
+.type-normal {
+  --type-color: #9fa19f;
+  color: #232323;
+}
+.type-fire {
+  --type-color: #ff9d55;
+  color: #5a2500;
+}
+.type-water {
+  --type-color: #4d90d5;
+  color: #041d39;
+}
+.type-electric {
+  --type-color: #f5cf3f;
+  color: #4a3a00;
+}
+.type-grass {
+  --type-color: #63bb5b;
+  color: #103d0c;
+}
+.type-ice {
+  --type-color: #73cec0;
+  color: #04302a;
+}
+.type-fighting {
+  --type-color: #ce4069;
+}
+.type-poison {
+  --type-color: #ab6ac8;
+  color: #24082f;
+}
+.type-ground {
+  --type-color: #d97845;
+  color: #421f05;
+}
+.type-flying {
+  --type-color: #8fa8dd;
+  color: #1b2440;
+}
+.type-psychic {
+  --type-color: #f97176;
+  color: #570a0d;
+}
+.type-bug {
+  --type-color: #90c12c;
+  color: #23380a;
+}
+.type-rock {
+  --type-color: #c7b78b;
+  color: #3a2f10;
+}
+.type-ghost {
+  --type-color: #5269ad;
+}
+.type-dragon {
+  --type-color: #0b6dc3;
+}
+.type-dark {
+  --type-color: #5a5465;
+}
+.type-steel {
+  --type-color: #5a8ea1;
+  color: #07222b;
+}
+.type-fairy {
+  --type-color: #ef93b2;
+  color: #4a0f2a;
+}

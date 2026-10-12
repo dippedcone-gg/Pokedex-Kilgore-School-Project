@@ -1,4 +1,4 @@
-import { formatName } from "../pokemonHelpers"
+import { formatName } from "../lib/pokemonHelpers"
 
 // A coloured pill showing a Pokemon type, like FIRE or GHOST.
 // The colour comes from CSS: className "type-fire" sets a --type-color.
